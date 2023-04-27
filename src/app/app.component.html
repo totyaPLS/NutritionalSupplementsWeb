@@ -1,14 +1,16 @@
 <app-menu (selectedPage)="changePage($event)"></app-menu>
-<ng-template [ngIf]="page === 'main'">
-  <app-main></app-main>
-</ng-template>
-<ng-template [ngIf]="page === 'cart'">
-  <app-cart></app-cart>
-</ng-template>
-<ng-template [ngIf]="page === 'login'">
-  <app-login></app-login>
-</ng-template>
-<ng-template [ngIf]="page === 'registration'">
-  <app-registration></app-registration>
-</ng-template>
+<ng-container [ngSwitch]="page">
+  <ng-container *ngSwitchCase="'main'">
+    <app-main></app-main>
+  </ng-container>
+  <ng-container *ngSwitchCase="'cart'">
+    <app-cart></app-cart>
+  </ng-container>
+  <ng-container *ngSwitchCase="'login'">
+    <app-login></app-login>
+  </ng-container>
+  <ng-container *ngSwitchCase="'registration'">
+    <app-registration></app-registration>
+  </ng-container>
+</ng-container>
 <!-- <router-outlet></router-outlet> -->
