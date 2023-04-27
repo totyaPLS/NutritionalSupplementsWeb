@@ -8,6 +8,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegistrationComponent } from './pages/registration/registration.component';
 import { MenuComponent } from './common/menu/menu.component';
+import { FormatToCurrencyHUFPipe } from './common/pipes/currency-format.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { MenuComponent } from './common/menu/menu.component';
     CartComponent,
     LoginComponent,
     RegistrationComponent,
-    MenuComponent
+    MenuComponent,
+    FormatToCurrencyHUFPipe
   ],
   imports: [
     BrowserModule,
