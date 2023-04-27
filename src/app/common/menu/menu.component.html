@@ -1,1 +1,6 @@
-<p>menu works!</p>
+<select #pageValue (change)="menuSwitch(pageValue.value)">
+  <option value="main">Main</option>
+  <option value="cart">Cart</option>
+  <option value="login">Login</option>
+  <option value="registration">Registration</option>
+</select>

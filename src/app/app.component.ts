@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  page = 'main';
   title = 'NutritionalSupplementsWeb';
+
+  changePage(selectedPage: string) {
+    this.page = selectedPage;
+  }
 }
