@@ -9,6 +9,7 @@ export class AppComponent {
   page = 'main';
   title = 'NutritionalSupplementsWeb';
 
+
   changePage(selectedPage: string) {
     this.page = selectedPage;
   }

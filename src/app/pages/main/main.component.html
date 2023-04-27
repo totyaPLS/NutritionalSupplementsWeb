@@ -1,11 +1,24 @@
 <p>main works!</p>
-<h3>{{ 20000 | formatToCurrencyHUF }}</h3>
 
-<div>
-  <div *ngFor="let obj of productObject">
-    <img [src]="'assets/' + obj.image + '.jpg'" alt="">
-    <p>{{ obj.name }}</p>
-    <p>{{ obj.rate }}</p>
-    <p>{{ obj.price }}</p>
+<main>
+  <div id="cards-container">
+    <mat-card class="item-card" *ngFor="let obj of productObject">
+      <div class="item-image-container">
+        <img mat-card-image [src]="'assets/' + obj.image + '.jpg'" alt="Item Image">
+      </div>
+      <mat-card-content class="card-content">
+        <h2 mat-card-title class="title">{{ obj.name }}</h2>
+        <!--<div class="card-rating">
+          <mat-icon class="material-icons">star</mat-icon>
+          <mat-icon class="material-icons">star</mat-icon>
+          <mat-icon class="material-icons">star</mat-icon>
+          <mat-icon class="material-icons">star</mat-icon>
+          <mat-icon class="material-icons">star_half</mat-icon>
+          <mat-icon class="material-icons">star_empty</mat-icon>
+        </div>-->
+        <ngb-rating [max]="5" [(rate)]="obj.rate" [readonly]="true"></ngb-rating>
+        <p mat-card-subtitle class="subtitle">{{ obj.price | formatToCurrencyHUF }}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
-</div>
+</main>
