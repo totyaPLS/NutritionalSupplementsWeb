@@ -1,2 +1,11 @@
 <p>main works!</p>
 <h3>{{ 20000 | formatToCurrencyHUF }}</h3>
+
+<div>
+  <div *ngFor="let obj of productObject">
+    <img [src]="'assets/' + obj.image + '.jpg'" alt="">
+    <p>{{ obj.name }}</p>
+    <p>{{ obj.rate }}</p>
+    <p>{{ obj.price }}</p>
+  </div>
+</div>
