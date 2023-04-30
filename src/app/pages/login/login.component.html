@@ -1,6 +1,6 @@
 <main>
   <mat-card>
-    <form class="login-form">
+    <form>
       <mat-card-title>Login</mat-card-title>
       <mat-form-field>
         <input matInput type="email" id="email" name="email" placeholder="Email" [formControl]="email" required>
@@ -10,7 +10,7 @@
                required>
       </mat-form-field>
     </form>
-    <div>
+    <div> <!-- FIXME: move the buttons into the form later -->
       <button mat-raised-button color="primary" class="form-btn" (click)="login()">Login</button>
       <button mat-raised-button color="primary" class="form-btn" [routerLink]="'/registration'">Signup</button>
     </div>
