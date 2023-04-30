@@ -4,12 +4,13 @@
       <form class="login-form">
         <mat-card-title>Login</mat-card-title>
         <mat-form-field>
-          <input matInput type="email" id="email" name="email" placeholder="Email" required>
+          <input matInput type="email" id="email" name="email" placeholder="Email" [formControl]="email" required>
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="password" id="password" name="password" placeholder="Password" required>
+          <input matInput type="password" id="password" name="password" placeholder="Password" [formControl]="password" required>
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit">Login</button>
+        <button mat-raised-button color="primary" type="submit" (click)="login()">Login</button>
+        <button mat-raised-button color="primary" [routerLink]="'/registration'">Signup</button>
       </form>
     </mat-card>
   </div>
