@@ -1,4 +1,4 @@
-<select #pageValue (change)="menuSwitch(pageValue.value)">
+<select [(ngModel)]="currentPage" (change)="menuSwitch()">
   <option value="main">Main</option>
   <option value="cart">Cart</option>
   <option value="login">Login</option>

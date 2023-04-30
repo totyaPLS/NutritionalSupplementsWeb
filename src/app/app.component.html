@@ -1,19 +1,2 @@
-<app-menu (selectedPage)="changePage($event)"></app-menu>
-<ng-container [ngSwitch]="page">
-  <ng-container *ngSwitchCase="'main'">
-    <app-main></app-main>
-  </ng-container>
-  <ng-container *ngSwitchCase="'cart'">
-    <app-cart></app-cart>
-  </ng-container>
-  <ng-container *ngSwitchCase="'login'">
-    <app-login></app-login>
-  </ng-container>
-  <ng-container *ngSwitchCase="'registration'">
-    <app-registration></app-registration>
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    <h1>Page not found...</h1>
-  </ng-container>
-</ng-container>
-<!-- <router-outlet></router-outlet> -->
+<app-menu (selectedPage)="changePage($event)" [currentPage]="page"></app-menu>
+<router-outlet></router-outlet>
