@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, ValidationErrors, Validators} from "@angular/forms";
 import {Location} from "@angular/common";
 import {User} from "../../common/models/User";
+import {ErrorMessages} from "../../common/enums/ErrorMessages";
 
 @Component({
   selector: 'app-registration',
@@ -19,9 +20,6 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private location: Location, private fb: FormBuilder) {
     this.rePassword.addValidators([Validators.required]);
-    this.rePassword.valueChanges.subscribe(() => {
-      this.checkPasswordsMatch(this.signUpForm.get('password')?.value, this.rePassword);
-    });
   }
 
   ngOnInit(): void {}
@@ -42,11 +40,14 @@ export class RegistrationComponent implements OnInit {
     return formGroup;
   }
 
-  checkPasswordsMatch(password: any, rePassword: any) {
-    if (password === rePassword.value) {
-      rePassword.setErrors(null);
+  checkPasswordsMatch() {
+  let firstPsw = this.signUpForm.get('password')?.value;
+  let rePsw = this.rePassword.value;
+
+    if (firstPsw !== '' && rePsw !== '' && firstPsw === rePsw) {
+      this.rePassword.setErrors(null);
     } else {
-      rePassword.setErrors({ mismatch: true });
+      this.rePassword.setErrors({ mismatch: true });
     }
   }
 
@@ -64,11 +65,11 @@ export class RegistrationComponent implements OnInit {
 
   getEmailError() {
     if (this.signUpForm.controls['email'].hasError('required')) {
-      return 'This field is required';
+      return ErrorMessages.Required;
     }
 
     if (this.signUpForm.controls['email'].hasError('email')) {
-      return 'Please give a valid e-mail format';
+      return ErrorMessages.Email;
     }
 
     return '';
@@ -76,15 +77,15 @@ export class RegistrationComponent implements OnInit {
 
   getPasswordError() {
     if (this.signUpForm.controls['password'].hasError('required')) {
-      return 'This field is required.';
+      return ErrorMessages.Required;
     }
 
     if ((this.signUpForm.controls['password'].hasError('pattern'))) {
-      return 'No special characters allowed';
+      return ErrorMessages.PatternSpecChars;
     }
 
     if (!(this.signUpForm.controls['password'].hasError('minLength'))) {
-      return 'Too short (min. 8 character)';
+      return ErrorMessages.MinLengthEight;
     }
 
     return '';
@@ -92,17 +93,14 @@ export class RegistrationComponent implements OnInit {
 
   getRePasswordError() {
     if (this.rePassword.hasError('mismatch')) {
-      return 'This does not match with the password';
+      return ErrorMessages.Mismatch;
     }
 
     return '';
   }
 
   onSubmit() {
-    this.checkPasswordsMatch(this.signUpForm.get('password')?.value, this.rePassword);
-    if (this.signUpForm.valid && this.rePassword.valid) {
-      console.log(this.signUpForm.value);
-    }
+    console.log(this.signUpForm.value);
   }
 
   goBack() { this.location.back() }

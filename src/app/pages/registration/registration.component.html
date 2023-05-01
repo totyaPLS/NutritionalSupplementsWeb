@@ -9,13 +9,13 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" id="password" name="password" placeholder="Password" formControlName="password" required>
+        <input matInput type="password" placeholder="Password" formControlName="password" required (ngModelChange)="checkPasswordsMatch()">
         <mat-error>
           {{ getPasswordError() }}
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" id="rePassword" name="rePassword" placeholder="Password again" [formControl]="rePassword" required>
+        <input matInput type="password" placeholder="Password again" [formControl]="rePassword" required (ngModelChange)="checkPasswordsMatch()">
         <mat-error>
           {{ getRePasswordError() }}
         </mat-error>
@@ -28,7 +28,7 @@
       </mat-form-field>
       <div>
         <button mat-raised-button type="submit" color="primary" class="form-btn" [disabled]="!(signUpForm.valid && rePassword.valid)">Signup</button>
-        <button mat-raised-button color="primary" class="form-btn" (click)="goBack()">Back</button>
+        <button mat-raised-button type="button" color="primary" class="form-btn" (click)="goBack()">Back</button>
       </div>
     </form>
   </mat-card>
