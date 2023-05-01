@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Component({
@@ -8,14 +8,20 @@ import {Router} from "@angular/router";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  email = new FormControl('');
-  password = new FormControl('');
+  loginForm = new FormGroup({
+    email: new FormControl(''),
+    password: new FormControl('')
+  });
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
-  login() {
+  onSubmit() {
     this.router.navigateByUrl('/main');
+  }
+
+  goToSignup() {
+    this.router.navigateByUrl('/registration');
   }
 }

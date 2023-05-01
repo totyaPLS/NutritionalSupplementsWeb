@@ -1,18 +1,18 @@
 <main>
   <mat-card>
-    <form>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-card-title>Login</mat-card-title>
       <mat-form-field>
-        <input matInput type="email" id="email" name="email" placeholder="Email" [formControl]="email" required>
+        <input matInput type="email" id="email" name="email" placeholder="Email" formControlName="email" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" id="password" name="password" placeholder="Password" [formControl]="password"
+        <input matInput type="password" id="password" name="password" placeholder="Password" formControlName="password"
                required>
       </mat-form-field>
+      <div>
+        <button mat-raised-button type="submit" color="primary" class="form-btn" [disabled]="!(loginForm.valid)">Login</button>
+        <button mat-raised-button type="button" color="primary" class="form-btn" (click)="goToSignup()">Signup</button>
+      </div>
     </form>
-    <div> <!-- FIXME: move the buttons into the form later -->
-      <button mat-raised-button color="primary" class="form-btn" (click)="login()">Login</button>
-      <button mat-raised-button color="primary" class="form-btn" [routerLink]="'/registration'">Signup</button>
-    </div>
   </mat-card>
 </main>
