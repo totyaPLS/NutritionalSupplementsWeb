@@ -4,12 +4,21 @@
       <mat-card-title>Registration</mat-card-title>
       <mat-form-field>
         <input matInput type="email" id="email" name="email" placeholder="Email" formControlName="email" required>
+        <mat-error>
+          {{ getEmailError() }}
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input matInput type="password" id="password" name="password" placeholder="Password" formControlName="password" required>
+        <mat-error>
+          {{ getPasswordError() }}
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input matInput type="password" id="rePassword" name="rePassword" placeholder="Password again" [formControl]="rePassword" required>
+        <mat-error>
+          {{ getRePasswordError() }}
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input matInput type="text" placeholder="First name" formControlName="firstName">
@@ -18,7 +27,7 @@
         <input matInput type="text" placeholder="Last name" formControlName="lastName">
       </mat-form-field>
       <div>
-        <button mat-raised-button type="submit" color="primary" class="form-btn">Signup</button>
+        <button mat-raised-button type="submit" color="primary" class="form-btn" [disabled]="!(signUpForm.valid && rePassword.valid)">Signup</button>
         <button mat-raised-button color="primary" class="form-btn" (click)="goBack()">Back</button>
       </div>
     </form>
