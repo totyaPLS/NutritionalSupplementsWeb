@@ -8,8 +8,13 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class MenuComponent {
   @Input() currentPage: string = '';
   @Output() selectedPage: EventEmitter<string> = new EventEmitter();
+  @Output() onCloseSidenav: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   menuSwitch() {
     this.selectedPage.emit(this.currentPage);
+  }
+
+  close() {
+    this.onCloseSidenav.emit(true);
   }
 }

@@ -4,15 +4,7 @@ html, body { height: 100%; }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background: rgb(233,20,20);
-  background: linear-gradient(158deg, rgba(233,20,20,1) 0%, rgba(29,25,156,1) 100%);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
 }
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

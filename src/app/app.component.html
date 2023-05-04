@@ -1,2 +1,24 @@
-<app-menu (selectedPage)="changePage($event)" [currentPage]="page"></app-menu>
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <app-menu (selectedPage)="changePage($event)" [currentPage]="page" (onCloseSidenav)="onClose($event, sidenav)"></app-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div fxHide.gt-xs>
+        <button mat-icon-button (click)="onToggleSidenav(sidenav)">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div>Nutritional Supplements</div>
+      <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+          <li><a routerLink="/main">Main</a></li>
+          <li><a routerLink="/cart">Cart</a></li>
+          <li><a routerLink="/login">Login</a></li>
+          <li><a routerLink="/registration">Registration</a></li>
+        </ul>
+      </div>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
