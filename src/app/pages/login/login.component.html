@@ -1,6 +1,10 @@
+<span class="loading-indicator" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</span>
+
 <main>
   <mat-card>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm"> <!--(ngSubmit)="onSubmit()"-->
       <mat-card-title>Login</mat-card-title>
       <mat-form-field>
         <input matInput type="email" id="email" name="email" placeholder="Email" formControlName="email" required>
@@ -10,7 +14,7 @@
                required>
       </mat-form-field>
       <div>
-        <button mat-raised-button type="submit" color="primary" class="form-btn" [disabled]="!(loginForm.valid)">Login</button>
+        <button mat-raised-button type="submit" color="primary" class="form-btn" [disabled]="!(loginForm.valid)" (click)="login()">Login</button>
         <button mat-raised-button type="button" color="primary" class="form-btn" (click)="goToSignup()">Signup</button>
       </div>
     </form>
