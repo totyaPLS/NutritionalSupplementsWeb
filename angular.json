@@ -50,6 +50,12 @@
                   "maximumError": "4kb"
                 }
               ],
+              "fileReplacements": [
+                {
+                  "replace": "NutritionalSupplementsWeb/src/environments/environment.ts",
+                  "with": "NutritionalSupplementsWeb/src/environments/environment.prod.ts"
+                }
+              ],
               "outputHashing": "all"
             },
             "development": {
@@ -99,6 +105,16 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "NutritionalSupplementsWeb:build:production",
+            "firebaseProject": "nutritional-supplements-web",
+            "firebaseHostingSite": "nutritional-supplements"
           }
         }
       }

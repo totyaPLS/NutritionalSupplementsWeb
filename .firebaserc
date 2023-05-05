@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "nutritional-supplements-web": {
+      "hosting": {
+        "NutritionalSupplementsWeb": [
+          "nutritional-supplements"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "nutritional-supplements-web"
+  }
+}
