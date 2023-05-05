@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {LoadingService} from "../../common/services/loading.service";
+import {AuthService} from "../../common/services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   });
   loading: boolean = false;
 
-  constructor(private router: Router, private loadingService: LoadingService) {}
+  constructor(private router: Router, private loadingService: LoadingService, private authService: AuthService) {}
 
   ngOnInit(): void {}
 
@@ -30,14 +31,12 @@ export class LoginComponent implements OnInit {
   login() {
     this.loading = true;
 
-    this.loadingService.loadingWithPromise(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).then((_: boolean) => {
+    this.authService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).then(cred => {
+      console.log(cred);
       this.router.navigateByUrl('/main');
       this.loading = false;
-    }).catch(error => {
-      console.error(error);
-      this.loading = false;
-    }).finally(() => {
-      console.log('finally executed!')
+    }).catch(err => {
+      console.error(err);
       this.loading = false;
     });
   }
