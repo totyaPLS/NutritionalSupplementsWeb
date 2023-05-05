@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, ValidationErrors, Validators} from "@angular/f
 import {Location} from "@angular/common";
 import {User} from "../../common/models/User";
 import {ErrorMessages} from "../../common/enums/ErrorMessages";
+import {AuthService} from "../../common/services/auth.service";
 
 @Component({
   selector: 'app-registration',
@@ -17,8 +18,9 @@ export class RegistrationComponent implements OnInit {
     lastName: ''
   });
   rePassword = new FormControl('');
+  loading: boolean = false;
 
-  constructor(private location: Location, private fb: FormBuilder) {
+  constructor(private location: Location, private fb: FormBuilder, private authService: AuthService) {
     this.rePassword.addValidators([Validators.required]);
   }
 
@@ -100,7 +102,14 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signUpForm.value);
+    this.loading = true;
+    this.authService.signup(this.signUpForm.get('email')?.value, this.signUpForm.get('password')?.value).then(cred => {
+      console.log(cred);
+      this.loading = false;
+    }).catch(err => {
+      console.error(err);
+      this.loading = false;
+    });
   }
 
   goBack() { this.location.back() }

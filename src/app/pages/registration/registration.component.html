@@ -1,3 +1,7 @@
+<span class="loading-indicator" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</span>
+
 <main>
   <mat-card>
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
