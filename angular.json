@@ -113,8 +113,8 @@
             "prerender": false,
             "ssr": false,
             "browserTarget": "NutritionalSupplementsWeb:build:production",
-            "firebaseProject": "nutritional-supplements-web",
-            "firebaseHostingSite": "nutritional-supplements"
+            "firebaseProject": "nutritional-supplements-5b5aa",
+            "firebaseHostingSite": "supplify"
           }
         }
       }

@@ -6,9 +6,16 @@
           "nutritional-supplements"
         ]
       }
+    },
+    "nutritional-supplements-5b5aa": {
+      "hosting": {
+        "NutritionalSupplementsWeb": [
+          "supplify"
+        ]
+      }
     }
   },
   "projects": {
-    "default": "nutritional-supplements-web"
+    "default": "nutritional-supplements-5b5aa"
   }
 }
