@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, ValidationErrors, Validators} from "@angular/forms";
+import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {Location} from "@angular/common";
 import {User} from "../../common/models/User";
 import {ErrorMessages} from "../../common/enums/ErrorMessages";
 import {AuthService} from "../../common/services/auth.service";
+import {UserService} from "../../common/services/user.service";
 
 @Component({
   selector: 'app-registration',
@@ -11,36 +12,30 @@ import {AuthService} from "../../common/services/auth.service";
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
-  signUpForm = this.createForm({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: ''
+  signUpForm = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(/^[a-zA-Z0-9]+$/)
+    ]),
+    rePassword: new FormControl(''),
+    name: new FormGroup({
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+    })
   });
   rePassword = new FormControl('');
   loading: boolean = false;
 
-  constructor(private location: Location, private fb: FormBuilder, private authService: AuthService) {
+  constructor(private location: Location, private authService: AuthService, private userService: UserService) {
     this.rePassword.addValidators([Validators.required]);
   }
 
   ngOnInit(): void {}
-
-  createForm(model: User) {
-    let formGroup = this.fb.group(model);
-
-    formGroup.get('email')?.addValidators([
-      Validators.required,
-      Validators.email
-    ]);
-    formGroup.get('password')?.addValidators([
-      Validators.required,
-      Validators.minLength(8),
-      Validators.pattern(/^[a-zA-Z0-9]+$/)
-    ]);
-
-    return formGroup;
-  }
 
   checkPasswordsMatch() {
   let firstPsw = this.signUpForm.get('password')?.value;
@@ -104,8 +99,15 @@ export class RegistrationComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     this.authService.signup(this.signUpForm.get('email')?.value, this.signUpForm.get('password')?.value).then(cred => {
-      console.log(cred);
       this.loading = false;
+      const user: User = {
+        id: cred.user?.uid as string,
+        email: this.signUpForm.get('email')?.value as string,
+        name: {
+          firstName: this.signUpForm.get('name.firstname')?.value as unknown as string,
+          lastName: this.signUpForm.get('name.lastname')?.value as unknown as string
+        }
+      };
     }).catch(err => {
       console.error(err);
       this.loading = false;

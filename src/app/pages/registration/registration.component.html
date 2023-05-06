@@ -25,10 +25,10 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="First name" formControlName="firstName">
+        <input matInput type="text" placeholder="First name" formControlName="name.firstName">
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="text" placeholder="Last name" formControlName="lastName">
+        <input matInput type="text" placeholder="Last name" formControlName="name.lastName">
       </mat-form-field>
       <div>
         <button mat-raised-button type="submit" color="primary" class="form-btn" [disabled]="!(signUpForm.valid && rePassword.valid)">Signup</button>
