@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
-import {LoadingService} from "../../common/services/loading.service";
 import {AuthService} from "../../common/services/auth.service";
 
 @Component({
@@ -16,7 +15,7 @@ export class LoginComponent implements OnInit {
   });
   loading: boolean = false;
 
-  constructor(private router: Router, private loadingService: LoadingService, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {}
 
