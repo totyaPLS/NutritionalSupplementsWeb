@@ -3,6 +3,7 @@ import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Observable, forkJoin} from "rxjs";
 import { switchMap, map } from 'rxjs/operators';
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {ProductObject} from "../constants/products";
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,12 @@ export class ProductService {
         return forkJoin(productObservables);
       })
     );
+  }
+
+  importProducts() {
+    const collectionRef = this.afs.collection('Products');
+    ProductObject.forEach(product => {
+      collectionRef.doc(product.id).set(product);
+    });
   }
 }

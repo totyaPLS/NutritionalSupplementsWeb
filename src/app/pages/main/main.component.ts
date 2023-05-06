@@ -16,5 +16,6 @@ export class MainComponent implements OnInit {
     this.productService.getProducts().subscribe(products => {
       this.products = products;
     });
+    // this.productService.importProducts();
   }
 }
