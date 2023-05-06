@@ -3,7 +3,7 @@
     <mat-icon>home</mat-icon>
     <span>Main</span>
   </a>
-  <a mat-list-item routerLink="/cart" (click)="close()">
+  <a mat-list-item routerLink="/cart" (click)="close()" *ngIf="loggedInUser">
     <mat-icon>shopping_cart</mat-icon>
     <span>Cart</span>
   </a>

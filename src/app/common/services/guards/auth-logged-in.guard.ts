@@ -12,11 +12,12 @@ export class AuthLoggedInGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+    console.log('AuthLoggedInGuard called');
     const user = JSON.parse(localStorage.getItem('user') as string);
     if (!user) {
       return true;
     }
-    this.router.navigate(['/not-found']);
+    this.router.navigate(['/main']);
     return false;
   }
 
