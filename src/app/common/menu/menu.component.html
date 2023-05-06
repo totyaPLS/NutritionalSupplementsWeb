@@ -7,21 +7,16 @@
     <mat-icon>shopping_cart</mat-icon>
     <span>Cart</span>
   </a>
-  <a mat-list-item routerLink="/login" (click)="close()">
+  <a mat-list-item routerLink="/login" (click)="close()" *ngIf="!(loggedInUser)">
     <mat-icon>login</mat-icon>
     <span>Login</span>
+  </a>
+  <a mat-list-item routerLink="/login" (click)="close(true)" *ngIf="loggedInUser">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
   </a>
   <a mat-list-item routerLink="/registration" (click)="close()">
     <mat-icon>app_registration</mat-icon>
     <span>Registration</span>
   </a>
 </mat-nav-list>
-
-
-
-<!--<select [(ngModel)]="currentPage" (change)="menuSwitch()">
-  <option value="main">Main</option>
-  <option value="cart">Cart</option>
-  <option value="login">Login</option>
-  <option value="registration">Registration</option>
-</select>-->

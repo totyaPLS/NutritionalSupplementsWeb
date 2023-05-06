@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
-import {filter} from "rxjs";
+import {filter, throwError} from "rxjs";
 import {MatSidenav} from "@angular/material/sidenav";
+import {AuthService} from "./common/services/auth.service";
+import { tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +14,9 @@ export class AppComponent implements OnInit{
   page = '';
   title = 'NutritionalSupplementsWeb';
   routes: Array<string> = [];
+  loggedInUser?: firebase.default.User | null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -25,6 +28,17 @@ export class AppComponent implements OnInit{
         this.page = currentPage;
       }
     });
+
+    this.authService.isUserLoggedIn().pipe(
+      tap((user) => {
+        this.loggedInUser = user;
+        console.log(this.loggedInUser);
+      }),
+      catchError((error) => {
+        console.error('An error occurred:', error);
+        return throwError(error);
+      })
+    ).subscribe();
   }
 
   changePage(selectedPage: string) {
@@ -39,5 +53,13 @@ export class AppComponent implements OnInit{
     if (event === true) {
       sidenav.close();
     }
+  }
+
+  logout(_?: boolean) {
+    this.authService.logout().then(() => {
+      console.log('Logged out succesfully');
+    }).catch(err => {
+      console.error(err);
+    });
   }
 }
