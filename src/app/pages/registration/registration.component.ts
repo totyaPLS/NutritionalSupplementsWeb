@@ -16,7 +16,8 @@ export class RegistrationComponent implements OnInit {
   signUpForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
-      Validators.email
+      Validators.email,
+      Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
     ]),
     password: new FormControl('', [
       Validators.required,
@@ -70,6 +71,10 @@ export class RegistrationComponent implements OnInit {
       return ErrorMessages.Email;
     }
 
+    if ((this.signUpForm.controls['email'].hasError('pattern'))) {
+      return ErrorMessages.Email;
+    }
+
     return '';
   }
 
@@ -115,8 +120,8 @@ export class RegistrationComponent implements OnInit {
       }).catch(error => {
         console.error(error);
       });
-    }).catch(err => {
-      console.error(err);
+    }).catch(error => {
+      console.log(error);
       this.loading = false;
     });
   }
