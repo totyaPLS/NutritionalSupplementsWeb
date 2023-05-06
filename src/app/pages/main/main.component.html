@@ -1,13 +1,13 @@
 <main>
   <div id="cards-container">
-    <mat-card class="item-card" *ngFor="let obj of productObject">
+    <mat-card class="item-card" *ngFor="let product of products">
       <div class="item-image-container">
-        <img mat-card-image [src]="'assets/' + obj.image + '.jpg'" alt="Item Image">
+        <img mat-card-image [src]="product.image_url" alt="Product Image">
       </div>
       <mat-card-content class="card-content">
-        <h2 mat-card-title class="title">{{ obj.name }}</h2>
-        <ngb-rating [max]="5" [(rate)]="obj.rate" [readonly]="true"></ngb-rating>
-        <p mat-card-subtitle class="subtitle">{{ obj.price | formatToCurrencyHUF }}</p>
+        <h2 mat-card-title class="title">{{ product.name }}</h2>
+        <ngb-rating [max]="5" [(rate)]="product.rate" [readonly]="true"></ngb-rating>
+        <p mat-card-subtitle class="subtitle">{{ product.price | formatToCurrencyHUF }}</p>
       </mat-card-content>
     </mat-card>
   </div>
