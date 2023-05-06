@@ -7,6 +7,10 @@
     <mat-icon>shopping_cart</mat-icon>
     <span>Cart</span>
   </a>
+  <a mat-list-item routerLink="/registration" (click)="close()" *ngIf="!(loggedInUser)">
+    <mat-icon>app_registration</mat-icon>
+    <span>Registration</span>
+  </a>
   <a mat-list-item routerLink="/login" (click)="close()" *ngIf="!(loggedInUser)">
     <mat-icon>login</mat-icon>
     <span>Login</span>
@@ -14,9 +18,5 @@
   <a mat-list-item routerLink="/login" (click)="close(true)" *ngIf="loggedInUser">
     <mat-icon>logout</mat-icon>
     <span>Logout</span>
-  </a>
-  <a mat-list-item routerLink="/registration" (click)="close()">
-    <mat-icon>app_registration</mat-icon>
-    <span>Registration</span>
   </a>
 </mat-nav-list>
