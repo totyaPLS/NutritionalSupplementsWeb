@@ -5,6 +5,7 @@ import {User} from "../../common/models/User";
 import {ErrorMessages} from "../../common/enums/ErrorMessages";
 import {AuthService} from "../../common/services/auth.service";
 import {UserService} from "../../common/services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -31,7 +32,7 @@ export class RegistrationComponent implements OnInit {
   rePassword = new FormControl('');
   loading: boolean = false;
 
-  constructor(private location: Location, private authService: AuthService, private userService: UserService) {
+  constructor(private location: Location, private router: Router, private authService: AuthService, private userService: UserService) {
     this.rePassword.addValidators([Validators.required]);
   }
 
@@ -104,10 +105,16 @@ export class RegistrationComponent implements OnInit {
         id: cred.user?.uid as string,
         email: this.signUpForm.get('email')?.value as string,
         name: {
-          firstName: this.signUpForm.get('name.firstname')?.value as unknown as string,
-          lastName: this.signUpForm.get('name.lastname')?.value as unknown as string
+          firstName: this.signUpForm.get('name.firstName')?.value as unknown as string,
+          lastName: this.signUpForm.get('name.lastName')?.value as unknown as string
         }
       };
+      this.userService.create(user).then(_ => {
+        console.log('User added!');
+        this.router.navigateByUrl('/main');
+      }).catch(error => {
+        console.error(error);
+      });
     }).catch(err => {
       console.error(err);
       this.loading = false;

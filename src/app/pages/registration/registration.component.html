@@ -24,12 +24,14 @@
           {{ getRePasswordError() }}
         </mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" placeholder="First name" formControlName="name.firstName">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" placeholder="Last name" formControlName="name.lastName">
-      </mat-form-field>
+      <span formGroupName="name">
+        <mat-form-field>
+          <input matInput type="text" placeholder="First name" formControlName="firstName" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="text" placeholder="Last name" formControlName="lastName" required>
+        </mat-form-field>
+      </span>
       <div>
         <button mat-raised-button type="submit" color="primary" class="form-btn" [disabled]="!(signUpForm.valid && rePassword.valid)">Signup</button>
         <button mat-raised-button type="button" color="primary" class="form-btn" (click)="goBack()">Back</button>
