@@ -32,10 +32,11 @@ export class AppComponent implements OnInit{
     this.authService.isUserLoggedIn().pipe(
       tap((user) => {
         this.loggedInUser = user;
-        console.log(this.loggedInUser);
+        localStorage.setItem('user', JSON.stringify(this.loggedInUser));
       }),
       catchError((error) => {
         console.error('An error occurred:', error);
+        localStorage.setItem('user', JSON.stringify('null'));
         return throwError(error);
       })
     ).subscribe();
