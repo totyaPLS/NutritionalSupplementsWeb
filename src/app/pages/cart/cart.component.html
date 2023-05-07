@@ -8,7 +8,7 @@
         <img mat-card-image [src]="'./assets/' + contentItem.product.image_url + '.jpg'" alt="Product Image">
         <p>{{ contentItem.product.name }}</p>
         <ngb-rating [max]="5" [(rate)]="contentItem.product.rate" [readonly]="true"></ngb-rating>
-        <p>Price: {{ contentItem.product.price | formatToCurrencyHUF }}</p>
+        <p>Price: {{ contentItem.product.price }}</p>
       </div>
       <div class="item-actions">
         <mat-form-field class="quantity-field">

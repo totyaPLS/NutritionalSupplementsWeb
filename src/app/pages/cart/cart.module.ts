@@ -11,13 +11,11 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {NgbRating} from "@ng-bootstrap/ng-bootstrap";
-import {FormatToCurrencyHUFPipe} from "../../common/pipes/currency-format.pipe";
 
 
 @NgModule({
   declarations: [
-    CartComponent,
-    FormatToCurrencyHUFPipe
+    CartComponent
   ],
     imports: [
         CommonModule,
