@@ -5,6 +5,7 @@ import {ProductService} from "../../common/services/product.service";
 import {Content} from "../../common/models/Content";
 import {Product} from "../../common/models/Product";
 import { map } from 'rxjs/operators';
+import {AngularFireStorage} from "@angular/fire/compat/storage";
 
 @Component({
   selector: 'app-cart',
@@ -15,8 +16,10 @@ export class CartComponent implements OnInit {
   cart: Cart = {
     id: '',
     userId: '',
-    content: new Array<Content>
+    contentList: new Array<Content>
   };
+  displayedColumns: string[] = ['image', 'name', 'rate', 'price', 'quantity', 'remove'];
+  storage: AngularFireStorage | undefined
 
   constructor(private cartService: CartService, private productService: ProductService) { }
 
@@ -29,10 +32,10 @@ export class CartComponent implements OnInit {
         this.cart.userId = cart.user_id;
 
         // iterating the content
-        console.log(cart.product_list);
-        cart.product_list.forEach((product: any) => {
+        // console.log(cart.product_list);
+        cart.product_list.forEach((content: any) => {
 
-          this.productService.getProductById(product.product_id).pipe(
+          this.productService.getProductById(content.product_id).pipe(
             map(collection => {
               let product: Product | null = null;
 
@@ -46,24 +49,23 @@ export class CartComponent implements OnInit {
                 };
               });
 
-              return product; // Return the transformed value
+              return product;
             })
           ).subscribe((product: any) => {
-            console.log(product);
+            // console.log(product);
             let content: Content = {
               product: product,
-              amount: product.amount
+              amount: 1
             };
 
-            this.cart.content.push(content);
+            this.cart.contentList.push(content);
           });
         });
       });
     });
   }
 
-  observableToProductObj(productId: string): any {
-
+  removeItem(productId: string) {
+    this.cartService.delete(productId);
   }
-
 }

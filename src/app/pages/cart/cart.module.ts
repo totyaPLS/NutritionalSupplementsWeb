@@ -10,22 +10,26 @@ import {FormsModule} from "@angular/forms";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
+import {NgbRating} from "@ng-bootstrap/ng-bootstrap";
+import {FormatToCurrencyHUFPipe} from "../../common/pipes/currency-format.pipe";
 
 
 @NgModule({
   declarations: [
-    CartComponent // If it has children they must be imported too
+    CartComponent,
+    FormatToCurrencyHUFPipe
   ],
-  imports: [
-    CommonModule,
-    CartRoutingModule,
-    MatTableModule,
-    MatCardModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule
-  ]
+    imports: [
+        CommonModule,
+        CartRoutingModule,
+        MatTableModule,
+        MatCardModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        NgbRating
+    ]
 })
 export class CartModule { }

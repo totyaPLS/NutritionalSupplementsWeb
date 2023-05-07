@@ -14,11 +14,15 @@ export class CartService {
     return this.afs.collection<Cart>(this.collectionName).valueChanges();
   }
 
-  update() {}
+  update(cart: Cart) {
+    return this.afs.collection<any>(this.collectionName).doc(cart.id).set(cart);
+  }
 
-  delete() {}
+  delete(id: string) {
+    return this.afs.collection<any>(this.collectionName).doc(id).delete();
+  }
 
   getCartByUserId(userId: string) {
-    return this.afs.collection<any>(this.collectionName, ref => ref.where('user_id', '==', userId)).valueChanges();
+    return this.afs.collection<any>(this.collectionName, ref => ref.where('user_id', '==', userId).orderBy('id', 'asc')).valueChanges();
   }
 }
