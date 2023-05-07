@@ -26,6 +26,10 @@ export class ProductService {
     );
   }
 
+  getProductById(productId: string) {
+    return this.afs.collection<any>(this.collectionName, ref => ref.where('id', '==', productId)).valueChanges();
+  }
+
   importProducts() {
     const collectionRef = this.afs.collection('Products');
     ProductObject.forEach(product => {

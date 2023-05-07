@@ -1,4 +1,7 @@
+import {Content} from "./Content";
+
 export interface Cart {
+  id: string;
   userId: string;
-  productList: Map<string, number>;
+  content: Array<Content>
 }

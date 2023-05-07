@@ -1,59 +1,63 @@
-import { Component } from '@angular/core';
-
-interface CartItem {
-  id: number;
-  image_url: string;
-  name: string;
-  rate: number;
-  price: number;
-  quantity: number;
-}
+import {Component, OnInit} from '@angular/core';
+import {CartService} from "../../common/services/cart.service";
+import {Cart} from "../../common/models/Cart";
+import {ProductService} from "../../common/services/product.service";
+import {Content} from "../../common/models/Content";
+import {Product} from "../../common/models/Product";
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent {
-  cartItems: CartItem[] = [
-    {
-      id: 1,
-      image_url: '',
-      name: 'Product 1',
-      rate: 4.5,
-      price: 10.99,
-      quantity: 1
-    },
-    {
-      id: 2,
-      image_url: '',
-      name: 'Product 2',
-      rate: 3.8,
-      price: 8.99,
-      quantity: 3
-    },
-    {
-      id: 3,
-      image_url: 'https://example.com/product3.jpg',
-      name: 'Product 3',
-      rate: 4.2,
-      price: 5.99,
-      quantity: 2
-    }
-  ];
+export class CartComponent implements OnInit {
+  cart: Cart = {
+    id: '',
+    userId: '',
+    content: new Array<Content>
+  };
 
-  displayedColumns: string[] = ['image', 'name', 'rate', 'price', 'quantity', 'remove'];
+  constructor(private cartService: CartService, private productService: ProductService) { }
 
-  updateQuantity(item: CartItem): void {
-    // Perform any necessary logic when the quantity is updated
-    console.log(`Quantity updated for ${item.name} (ID: ${item.id}): ${item.quantity}`);
+  ngOnInit() {
+    this.cartService.getCartByUserId(JSON.parse(localStorage.getItem('user') as string).uid).subscribe(collection => {
+
+      // iterating the carts
+      collection.forEach(cart => {
+        this.cart.id = cart.id;
+        this.cart.userId = cart.user_id;
+
+        // iterating the content
+        cart.product_list.forEach((product: any) => {
+          let content: Content = {
+            product: this.observableToProductObj(product.product_id),
+            amount: product.amount
+          };
+          this.cart.content.push(content);
+        });
+      });
+    });
   }
 
-  removeItem(item: CartItem): void {
-    // Remove the item from the cartItems array
-    const index = this.cartItems.indexOf(item);
-    if (index > -1) {
-      this.cartItems.splice(index, 1);
-    }
+  observableToProductObj(productId: string): any {
+    this.productService.getProductById(productId).pipe(
+      map(collection => {
+        let product: Product | null = null;
+
+        collection.forEach(item => {
+          product = {
+            id: item.id,
+            image_url: item.image_url,
+            name: item.name,
+            rate: item.rate,
+            price: item.price
+          };
+        });
+
+        return product; // Return the transformed value
+      })
+    ).subscribe();
   }
+
 }
