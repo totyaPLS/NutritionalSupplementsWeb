@@ -29,35 +29,41 @@ export class CartComponent implements OnInit {
         this.cart.userId = cart.user_id;
 
         // iterating the content
+        console.log(cart.product_list);
         cart.product_list.forEach((product: any) => {
-          let content: Content = {
-            product: this.observableToProductObj(product.product_id),
-            amount: product.amount
-          };
-          this.cart.content.push(content);
+
+          this.productService.getProductById(product.product_id).pipe(
+            map(collection => {
+              let product: Product | null = null;
+
+              collection.forEach(item => {
+                product = {
+                  id: item.id,
+                  image_url: item.image_url,
+                  name: item.name,
+                  rate: item.rate,
+                  price: item.price
+                };
+              });
+
+              return product; // Return the transformed value
+            })
+          ).subscribe((product: any) => {
+            console.log(product);
+            let content: Content = {
+              product: product,
+              amount: product.amount
+            };
+
+            this.cart.content.push(content);
+          });
         });
       });
     });
   }
 
   observableToProductObj(productId: string): any {
-    this.productService.getProductById(productId).pipe(
-      map(collection => {
-        let product: Product | null = null;
 
-        collection.forEach(item => {
-          product = {
-            id: item.id,
-            image_url: item.image_url,
-            name: item.name,
-            rate: item.rate,
-            price: item.price
-          };
-        });
-
-        return product; // Return the transformed value
-      })
-    ).subscribe();
   }
 
 }

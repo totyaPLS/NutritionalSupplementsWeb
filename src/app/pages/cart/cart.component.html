@@ -3,6 +3,6 @@
   <p>User ID: {{ cart.userId }}</p>
   <p>Product List:</p>
   <ul>
-    <li *ngFor="let contentItem of cart.content">{{ contentItem.product }}</li>
+    <li *ngFor="let contentItem of cart.content">{{ contentItem.product.name }}</li>
   </ul>
 </div>
