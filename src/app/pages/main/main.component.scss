@@ -34,6 +34,7 @@ img {
 
 .card-content {
   padding-top: 15px;
+  width: 45%;
 }
 
 .title {
@@ -49,4 +50,10 @@ ngb-rating {
 
 .subtitle {
   color: black;
+}
+
+.to-cart-button-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

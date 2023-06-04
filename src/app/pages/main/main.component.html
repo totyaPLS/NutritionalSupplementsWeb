@@ -13,9 +13,9 @@
         <ngb-rating [max]="5" [(rate)]="product.rate" [readonly]="true"></ngb-rating>
         <p mat-card-subtitle class="subtitle">{{ product.price | formatToCurrencyHUF }}</p>
       </mat-card-content>
-      <mat-card-footer>
-        <p>miez</p>
-      </mat-card-footer>
+      <div class="to-cart-button-div">
+        <button mat-raised-button color="primary">Add to cart</button>
+      </div>
     </mat-card>
   </div>
 </main>
