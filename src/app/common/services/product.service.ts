@@ -4,16 +4,17 @@ import {Observable, forkJoin} from "rxjs";
 import { switchMap, map } from 'rxjs/operators';
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {ProductObject} from "../constants/products";
+import {Product} from "../models/Product";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   collectionName = 'Products';
-  constructor(private afs: AngularFirestore, private storage: AngularFireStorage) { }
+  constructor(private db: AngularFirestore, private storage: AngularFireStorage) { }
 
   getProducts(): Observable<any[]> {
-    return this.afs.collection(this.collectionName).valueChanges().pipe(
+    return this.db.collection(this.collectionName).valueChanges().pipe(
       switchMap((products: any[]) => {
         const productObservables = products.map(product => {
           const imageUrl = this.storage.ref('images/' + product.image_url + '.jpg').getDownloadURL();
@@ -27,11 +28,15 @@ export class ProductService {
   }
 
   getProductById(productId: string) {
-    return this.afs.collection<any>(this.collectionName, ref => ref.where('id', '==', productId)).valueChanges();
+    return new Promise<any>(resolve => {
+      this.db.collection<Product>(
+        this.collectionName, ref => ref.where('id', '==', productId)
+      ).valueChanges().subscribe(cart => resolve(cart));
+    });
   }
 
   importProducts() {
-    const collectionRef = this.afs.collection('Products');
+    const collectionRef = this.db.collection('Products');
     ProductObject.forEach(product => {
       collectionRef.doc(product.id).set(product);
     });

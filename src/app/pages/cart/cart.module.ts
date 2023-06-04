@@ -11,23 +11,25 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {NgbRating} from "@ng-bootstrap/ng-bootstrap";
+import {MainModule} from "../main/main.module";
 
 
 @NgModule({
   declarations: [
     CartComponent
   ],
-    imports: [
-        CommonModule,
-        CartRoutingModule,
-        MatTableModule,
-        MatCardModule,
-        MatFormFieldModule,
-        FormsModule,
-        MatIconModule,
-        MatButtonModule,
-        MatInputModule,
-        NgbRating
-    ]
+  imports: [
+    CommonModule,
+    CartRoutingModule,
+    MatTableModule,
+    MatCardModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    NgbRating,
+    MainModule
+  ]
 })
 export class CartModule { }

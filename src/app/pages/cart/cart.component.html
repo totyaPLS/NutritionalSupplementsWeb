@@ -3,18 +3,18 @@
     <mat-card-title>User's Cart</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngFor="let contentItem of cart.contentList" class="cart-item">
+    <div *ngFor="let contentItem of cart.contentMap | keyvalue" class="cart-item">
       <div class="item-details">
-        <img mat-card-image [src]="'./assets/' + contentItem.product.image_url + '.jpg'" alt="Product Image">
-        <p>{{ contentItem.product.name }}</p>
-        <ngb-rating [max]="5" [(rate)]="contentItem.product.rate" [readonly]="true"></ngb-rating>
-        <p>Price: {{ contentItem.product.price }}</p>
+        <img mat-card-image [src]="'./assets/' + contentItem.key.image_url + '.jpg'" alt="Product Image">
+        <p>{{ contentItem.key.name }}</p>
+        <ngb-rating [max]="5" [(rate)]="contentItem.key.rate" [readonly]="true"></ngb-rating>
+        <p>Price: {{ contentItem.key.price | formatToCurrencyHUF }}</p>
       </div>
       <div class="item-actions">
         <mat-form-field class="quantity-field">
-          <input matInput type="number" [value]="contentItem.amount.toString()" [(ngModel)]="contentItem.amount">
+          <input matInput type="number" [value]="contentItem.value.toString()" [(ngModel)]="contentItem.value">
         </mat-form-field>
-        <button mat-icon-button color="warn" (click)="removeItem(contentItem.product.id)">
+        <button mat-icon-button color="warn" (click)="removeItem(contentItem.key.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

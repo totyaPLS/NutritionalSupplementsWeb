@@ -9,15 +9,18 @@ import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
-  declarations: [
-    MainComponent,
-    FormatToCurrencyHUFPipe
-  ],
-  imports: [
-    CommonModule,
-    MainRoutingModule,
-    NgbModule,
-    MatCardModule,
-  ]
+    declarations: [
+        MainComponent,
+        FormatToCurrencyHUFPipe
+    ],
+    exports: [
+        FormatToCurrencyHUFPipe
+    ],
+    imports: [
+        CommonModule,
+        MainRoutingModule,
+        NgbModule,
+        MatCardModule,
+    ]
 })
 export class MainModule { }

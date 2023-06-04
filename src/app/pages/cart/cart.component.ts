@@ -1,68 +1,52 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CartService} from "../../common/services/cart.service";
 import {Cart} from "../../common/models/Cart";
 import {ProductService} from "../../common/services/product.service";
-import {Content} from "../../common/models/Content";
 import {Product} from "../../common/models/Product";
-import { map } from 'rxjs/operators';
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit {
-  cart: Cart = {
-    id: '',
-    userId: '',
-    contentList: new Array<Content>
-  };
+export class CartComponent implements OnInit, OnDestroy {
+  cart: Cart = new Cart();
+
+  loadingSubscription?: Subscription;
   displayedColumns: string[] = ['image', 'name', 'rate', 'price', 'quantity', 'remove'];
-  storage: AngularFireStorage | undefined
+  storage?: AngularFireStorage
 
   constructor(private cartService: CartService, private productService: ProductService) { }
 
   ngOnInit() {
-    this.cartService.getCartByUserId(JSON.parse(localStorage.getItem('user') as string).uid).subscribe(collection => {
+    let currentUserId: string = JSON.parse(localStorage.getItem('user') as string).uid;
+    this.getProductsFromCart(currentUserId);
+  }
 
-      // iterating the carts
-      collection.forEach(cart => {
-        this.cart.id = cart.id;
-        this.cart.userId = cart.user_id;
+  ngOnDestroy() {
+    this.loadingSubscription?.unsubscribe();
+  }
 
-        // iterating the content
-        // console.log(cart.product_list);
-        cart.product_list.forEach((content: any) => {
-
-          this.productService.getProductById(content.product_id).pipe(
-            map(collection => {
-              let product: Product | null = null;
-
-              collection.forEach(item => {
-                product = {
-                  id: item.id,
-                  image_url: item.image_url,
-                  name: item.name,
-                  rate: item.rate,
-                  price: item.price
-                };
-              });
-
-              return product;
-            })
-          ).subscribe((product: any) => {
-            // console.log(product);
-            let content: Content = {
-              product: product,
-              amount: 1
-            };
-
-            this.cart.contentList.push(content);
-          });
-        });
-      });
+  getProductsFromCart(userId: string) {
+    this.cartService.getCartByUserId(userId).then(async cart => {
+      if (cart !== undefined) {
+        let productMap: Map<Product, number> = this.convertToMap(cart[0].product_list);
+        this.cart = new Cart(cart[0].id, cart[0].user_id, productMap);
+        console.log(this.cart);
+      }
     });
+  }
+
+  convertToMap(productList: Array<any>): Map<Product, number> {
+    let productMap: Map<Product, number> = new Map<Product, number>();
+    for (const item of productList) {
+      this.productService.getProductById(item.product_id).then(product => {
+        productMap.set(product[0], item.amount);
+      });
+    }
+    return productMap;
   }
 
   removeItem(productId: string) {
