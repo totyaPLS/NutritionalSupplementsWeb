@@ -8,7 +8,10 @@ export class CartService {
   collectionName = 'Carts';
   constructor(private db: AngularFirestore) { }
 
-  create(cart: Cart) {}
+  create(cart: Cart) {
+    cart.id = this.db.createId();
+    return this.db.collection<Cart>(this.collectionName).doc(cart.id).set(cart)
+  }
 
   getAll() {
     return this.db.collection<Cart>(this.collectionName).valueChanges();
@@ -28,5 +31,9 @@ export class CartService {
         this.collectionName, ref => ref.where('user_id', '==', userId)
       ).valueChanges().subscribe(cart => resolve(cart));
     });
+  }
+
+  addToCart(productId: string) {
+
   }
 }

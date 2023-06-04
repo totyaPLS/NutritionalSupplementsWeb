@@ -115,7 +115,7 @@ export class RegistrationComponent implements OnInit {
         }
       };
       this.userService.create(user).then(_ => {
-        console.log('User added!');
+        // TODO: create empty Cart for the user
         this.router.navigateByUrl('/main');
       }).catch(error => {
         console.error(error);

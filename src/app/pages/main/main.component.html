@@ -5,17 +5,19 @@
 <main>
   <div id="cards-container">
     <mat-card class="item-card" *ngFor="let product of productList">
-      <div class="item-image-container">
-        <img mat-card-image [src]="product.image_url" alt="Product Image">
-      </div>
-      <mat-card-content class="card-content">
-        <h2 mat-card-title class="title">{{ product.name }}</h2>
-        <ngb-rating [max]="5" [(rate)]="product.rate" [readonly]="true"></ngb-rating>
-        <p mat-card-subtitle class="subtitle">{{ product.price | formatToCurrencyHUF }}</p>
-      </mat-card-content>
+        <div class="item-image-container">
+          <img mat-card-image [src]="product.image_url" alt="Product Image">
+        </div>
+        <mat-card-content class="card-content">
+          <h2 mat-card-title class="title">{{ product.name }}</h2>
+          <ngb-rating [max]="5" [(rate)]="product.rate" [readonly]="true"></ngb-rating>
+          <p mat-card-subtitle class="subtitle">{{ product.price | formatToCurrencyHUF }}</p>
+        </mat-card-content>
+
       <div class="to-cart-button-div">
-        <button mat-raised-button color="primary">Add to cart</button>
+        <button mat-raised-button type="button" color="primary" (click)="addToCart(product.id)">Add to cart</button>
       </div>
+
     </mat-card>
   </div>
 </main>
