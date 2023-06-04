@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from "../../common/services/product.service";
+import {Product} from "../../common/models/Product";
 
 @Component({
   selector: 'app-main',
@@ -7,15 +8,21 @@ import {ProductService} from "../../common/services/product.service";
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  products: any[] | undefined;
+  productList: Array<Product> = new Array<Product>();
 
   constructor(private productService: ProductService) {
   }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe(products => {
-      this.products = products;
-    });
+    this.initAllProducts();
     // this.productService.importProducts();
+  }
+
+  private initAllProducts() {
+    this.productService.getProducts().then(products => {
+      for (const product of products) {
+        this.productList.push(product);
+      }
+    }).catch(error => {console.error(error)});
   }
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {Observable, forkJoin} from "rxjs";
-import { switchMap, map } from 'rxjs/operators';
+import {take} from "rxjs";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {ProductObject} from "../constants/products";
 import {Product} from "../models/Product";
@@ -11,27 +10,38 @@ import {Product} from "../models/Product";
 })
 export class ProductService {
   collectionName = 'Products';
+  imgUrlPrefix = 'images/'
+  imgUrlSuffix = '.jpg'
+
   constructor(private db: AngularFirestore, private storage: AngularFireStorage) { }
 
-  getProducts(): Observable<any[]> {
-    return this.db.collection(this.collectionName).valueChanges().pipe(
-      switchMap((products: any[]) => {
-        const productObservables = products.map(product => {
-          const imageUrl = this.storage.ref('images/' + product.image_url + '.jpg').getDownloadURL();
-          return imageUrl.pipe(
-            map(url => ({ ...product, image_url: url }))
-          );
-        });
-        return forkJoin(productObservables);
-      })
-    );
+  getProducts(): Promise<any> {
+    return new Promise<any>(resolve => {
+      let loader = this.db.collection<Product>(this.collectionName).valueChanges().subscribe(async products => {
+        for (const product of products) {
+          await this.loadImage(this.imgUrlPrefix + product.image_url + this.imgUrlSuffix)?.then(data => {
+            product.image_url = data;
+          });
+        }
+        await resolve(products);
+        await loader.unsubscribe();
+      });
+    });
   }
 
-  getProductById(productId: string) {
+  getProductById(productId: string): Promise<any> {
     return new Promise<any>(resolve => {
-      this.db.collection<Product>(
+      let loader = this.db.collection<Product>(
         this.collectionName, ref => ref.where('id', '==', productId)
-      ).valueChanges().subscribe(cart => resolve(cart));
+      ).valueChanges().subscribe(async products => {
+        for (const product of products) {
+          await this.loadImage(this.imgUrlPrefix + product.image_url + this.imgUrlSuffix)?.then(data => {
+            product.image_url = data;
+          });
+        }
+        await resolve(products);
+        await loader.unsubscribe();
+      });
     });
   }
 
@@ -40,5 +50,9 @@ export class ProductService {
     ProductObject.forEach(product => {
       collectionRef.doc(product.id).set(product);
     });
+  }
+
+  loadImage(imageUrl: string): Promise<any> | undefined {
+    return this.storage.ref(imageUrl).getDownloadURL().pipe(take(1)).toPromise();
   }
 }
