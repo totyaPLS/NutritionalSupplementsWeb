@@ -9,6 +9,7 @@ import {Product} from "../../common/models/Product";
 })
 export class MainComponent implements OnInit {
   productList: Array<Product> = new Array<Product>();
+  loading: boolean = false;
 
   constructor(private productService: ProductService) {
   }
@@ -19,10 +20,12 @@ export class MainComponent implements OnInit {
   }
 
   private initAllProducts() {
+    this.loading = true;
     this.productService.getProducts().then(products => {
       for (const product of products) {
         this.productList.push(product);
       }
+      this.loading = false;
     }).catch(error => {console.error(error)});
   }
 }

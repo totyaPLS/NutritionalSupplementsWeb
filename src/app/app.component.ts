@@ -57,9 +57,7 @@ export class AppComponent implements OnInit{
   }
 
   logout(_?: boolean) {
-    this.authService.logout().then(() => {
-      console.log('Logged out succesfully');
-    }).catch(err => {
+    this.authService.logout().then(() => {}).catch(err => {
       console.error(err);
     });
   }

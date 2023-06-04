@@ -11,24 +11,26 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {NgbRating} from "@ng-bootstrap/ng-bootstrap";
 import {MainModule} from "../main/main.module";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 @NgModule({
   declarations: [
     CartComponent
   ],
-  imports: [
-    CommonModule,
-    CartRoutingModule,
-    MatTableModule,
-    MatCardModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    NgbRating,
-    MainModule
-  ]
+    imports: [
+        CommonModule,
+        CartRoutingModule,
+        MatTableModule,
+        MatCardModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        NgbRating,
+        MainModule,
+        MatProgressSpinnerModule
+    ]
 })
 export class CartModule { }

@@ -1,3 +1,7 @@
+<span class="loading-indicator" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</span>
+
 <main>
   <div id="cards-container">
     <mat-card class="item-card" *ngFor="let product of productList">
@@ -9,6 +13,9 @@
         <ngb-rating [max]="5" [(rate)]="product.rate" [readonly]="true"></ngb-rating>
         <p mat-card-subtitle class="subtitle">{{ product.price | formatToCurrencyHUF }}</p>
       </mat-card-content>
+      <mat-card-footer>
+        <p>miez</p>
+      </mat-card-footer>
     </mat-card>
   </div>
 </main>

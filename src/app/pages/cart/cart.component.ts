@@ -17,10 +17,12 @@ export class CartComponent implements OnInit, OnDestroy {
   loadingSubscription?: Subscription;
   displayedColumns: string[] = ['image', 'name', 'rate', 'price', 'quantity', 'remove'];
   storage?: AngularFireStorage
+  loading: boolean = false;
 
   constructor(private cartService: CartService, private productService: ProductService) { }
 
   ngOnInit() {
+    this.loading = true;
     this.currentUserId = JSON.parse(localStorage.getItem('user') as string).uid;
     this.initProductsFromCart(this.currentUserId);
   }
@@ -44,6 +46,7 @@ export class CartComponent implements OnInit, OnDestroy {
     for (const item of productList) {
       this.productService.getProductById(item.product_id).then(product => {
         productMap.set(product[0], item.amount);
+        this.loading = false;
       }).catch(error => {console.error(error)});
     }
     return productMap;
