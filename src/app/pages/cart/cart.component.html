@@ -5,7 +5,7 @@
   <mat-card-content>
     <div *ngFor="let contentItem of cart.contentMap | keyvalue" class="cart-item">
       <div class="item-details">
-        <img mat-card-image [src]="'./assets/' + contentItem.key.image_url + '.jpg'" alt="Product Image">
+        <img mat-card-image [src]="contentItem.key.image_url" alt="Product Image">
         <p>{{ contentItem.key.name }}</p>
         <ngb-rating [max]="5" [(rate)]="contentItem.key.rate" [readonly]="true"></ngb-rating>
         <p>Price: {{ contentItem.key.price | formatToCurrencyHUF }}</p>
