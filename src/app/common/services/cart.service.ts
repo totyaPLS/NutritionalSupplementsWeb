@@ -10,7 +10,7 @@ export class CartService {
   collectionName = 'Carts';
   constructor(private db: AngularFirestore, private productService: ProductService) { }
 
-  create(cart: Cart) {
+  create(cart: any) {
     cart.id = this.db.createId();
     return this.db.collection<Cart>(this.collectionName).doc(cart.id).set(cart)
   }
@@ -54,7 +54,7 @@ export class CartService {
 
   increaseProductAmount(cart: Cart, productId: string) {
     return new Promise<Cart>(resolve => {
-      this.db.collection<any>(this.collectionName).doc(cart.id).valueChanges().subscribe(firebaseCart => {
+      let sub = this.db.collection<any>(this.collectionName).doc(cart.id).valueChanges().subscribe(firebaseCart => {
         for (const product of firebaseCart.product_list) {
           if (product.product_id === productId) {
             product.amount++;
@@ -62,24 +62,20 @@ export class CartService {
           }
         }
         resolve(firebaseCart);
+        sub.unsubscribe();
       });
     });
   }
 
   addNewProductToCart(cart: Cart, productId: string) {
     return new Promise<Cart>(resolve => {
-      this.db.collection<any>(this.collectionName).doc(cart.id).valueChanges().subscribe(firebaseCart => {
-        /*for (const product of firebaseCart.product_list) {
-          if (product.product_id === productId) {
-            product.amount++;
-            break;
-          }
-        }*/
+      let sub = this.db.collection<any>(this.collectionName).doc(cart.id).valueChanges().subscribe(firebaseCart => {
         firebaseCart.product_list.push(
           {amount: 1, product_id: productId}
         );
 
         resolve(firebaseCart);
+        sub.unsubscribe();
       });
     });
   }
