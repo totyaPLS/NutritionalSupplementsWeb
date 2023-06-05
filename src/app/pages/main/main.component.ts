@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProductService} from "../../common/services/product.service";
 import {Product} from "../../common/models/Product";
 import {CartService} from "../../common/services/cart.service";
+import {Cart} from "../../common/models/Cart";
 
 @Component({
   selector: 'app-main',
@@ -33,11 +34,13 @@ export class MainComponent implements OnInit {
   addToCart(productId: string) {
     if (this.currentUserId === undefined) return;
 
-    this.cartService.getCartByUserId(this.currentUserId).then(cart => {
+    this.cartService.getCartAndConvertToCartObject(this.currentUserId).then(cart => {
       if (cart === undefined) return;
 
-      for (const productAndAmount of cart[0].product_list) {
-        console.log(productAndAmount.amount);
+      if (this.cartContainsProduct(cart, productId)) {
+        console.log("This product is in the user's cart!");
+      } else {
+        console.log("This product is NOT in the user's cart!");
       }
     }).catch(error => {console.error(error)});
 
@@ -48,5 +51,10 @@ export class MainComponent implements OnInit {
     // this.cartService.addToCart(productId);
   }
 
-  searchProductId() {}
+  cartContainsProduct(cart: Cart, productId: string): boolean {
+    for (const [product] of cart.contentMap.entries()) {
+      if (product.id === productId) return true;
+    }
+    return false;
+  }
 }

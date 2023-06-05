@@ -45,6 +45,18 @@ export class ProductService {
     });
   }
 
+  getProductById2(productId: string): Promise<Product> {
+    return new Promise<Product>(resolve => {
+      let loader = this.db.collection<any>(
+        this.collectionName, ref => ref.where('id', '==', productId)
+      ).valueChanges().subscribe(products => {
+        let product: Product = products[0];
+        resolve(product);
+        loader.unsubscribe();
+      });
+    });
+  }
+
   importProducts() {
     const collectionRef = this.db.collection('Products');
     ProductObject.forEach(product => {

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Cart} from "../models/Cart";
+import {ProductService} from "./product.service";
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   collectionName = 'Carts';
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore, private productService: ProductService) { }
 
   create(cart: Cart) {
     cart.id = this.db.createId();
@@ -31,6 +32,31 @@ export class CartService {
         this.collectionName, ref => ref.where('user_id', '==', userId)
       ).valueChanges().subscribe(cart => resolve(cart));
     });
+  }
+
+  getCartAndConvertToCartObject(userId: string) {
+    return new Promise<Cart>(resolve => {
+      this.db.collection<any>(
+        this.collectionName, ref => ref.where('user_id', '==', userId)
+      ).valueChanges().subscribe(cart => {
+        resolve(this.convertFirebaseCartToCartObject(cart));
+      });
+    });
+  }
+
+  async convertFirebaseCartToCartObject(firebaseCartList: any[]): Promise<Cart> {
+    const currUserFirebaseCart = firebaseCartList[0];
+    let cartObj: Cart = new Cart();
+    cartObj.id = currUserFirebaseCart.id;
+    cartObj.userId = currUserFirebaseCart.user_id;
+
+    for (const productListElement of currUserFirebaseCart.product_list) {
+      await this.productService.getProductById2(productListElement.product_id).then(product => {
+        cartObj.contentMap.set(product, productListElement.amount);
+      });
+    }
+
+    return cartObj;
   }
 
   addToCart(productId: string) {
