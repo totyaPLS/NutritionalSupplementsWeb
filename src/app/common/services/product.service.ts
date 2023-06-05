@@ -15,44 +15,33 @@ export class ProductService {
 
   constructor(private db: AngularFirestore, private storage: AngularFireStorage) { }
 
-  getProducts(): Promise<any> {
-    return new Promise<any>(resolve => {
-      let loader = this.db.collection<Product>(this.collectionName).valueChanges().subscribe(async products => {
-        for (const product of products) {
+  getProducts(): Promise<Array<Product>> {
+    return new Promise<Array<Product>>(resolve => {
+      let loader = this.db.collection<Product>(this.collectionName).valueChanges().subscribe(async productList => {
+        for (const product of productList) {
           await this.loadImage(this.imgUrlPrefix + product.image_url + this.imgUrlSuffix)?.then(data => {
             product.image_url = data;
           });
         }
-        await resolve(products);
+        await resolve(productList);
         await loader.unsubscribe();
       });
     });
   }
 
-  getProductById(productId: string): Promise<any> {
-    return new Promise<any>(resolve => {
-      let loader = this.db.collection<Product>(
-        this.collectionName, ref => ref.where('id', '==', productId)
-      ).valueChanges().subscribe(async products => {
-        for (const product of products) {
-          await this.loadImage(this.imgUrlPrefix + product.image_url + this.imgUrlSuffix)?.then(data => {
-            product.image_url = data;
-          });
-        }
-        await resolve(products);
-        await loader.unsubscribe();
-      });
-    });
-  }
-
-  getProductById2(productId: string): Promise<Product> {
+  getProductById(productId: string): Promise<Product> {
     return new Promise<Product>(resolve => {
       let loader = this.db.collection<any>(
         this.collectionName, ref => ref.where('id', '==', productId)
-      ).valueChanges().subscribe(products => {
+      ).valueChanges().subscribe(async products => {
         let product: Product = products[0];
-        resolve(product);
-        loader.unsubscribe();
+
+        await this.loadImage(this.imgUrlPrefix + product.image_url + this.imgUrlSuffix)?.then(data => {
+          product.image_url = data;
+        });
+
+        await resolve(product);
+        await loader.unsubscribe();
       });
     });
   }

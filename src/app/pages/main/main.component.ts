@@ -17,16 +17,16 @@ export class MainComponent implements OnInit {
   constructor(private productService: ProductService, private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.currentUserId = JSON.parse(localStorage.getItem('user') as string).uid;
+    if (JSON.parse(localStorage.getItem('user') as string) !== null)
+      this.currentUserId = JSON.parse(localStorage.getItem('user') as string).uid;
+
     this.initAllProducts();
   }
 
   private initAllProducts() {
     this.loading = true;
     this.productService.getProducts().then(products => {
-      for (const product of products) {
-        this.productList.push(product);
-      }
+      this.productList = products;
       this.loading = false;
     }).catch(error => {console.error(error)});
   }
@@ -34,13 +34,13 @@ export class MainComponent implements OnInit {
   addToCart(productId: string) {
     if (this.currentUserId === undefined) return;
 
-    this.cartService.getCartAndConvertToCartObject(this.currentUserId).then(cart => {
+    this.cartService.getCartByUserId(this.currentUserId).then(cart => {
       if (cart === undefined) return;
 
       if (this.cartContainsProduct(cart, productId)) {
-        console.log("This product is in the user's cart!");
+        this.cartService.increaseProductAmount(cart, productId);
       } else {
-        console.log("This product is NOT in the user's cart!");
+        this.cartService.addNewProductToCart(cart, productId);
       }
     }).catch(error => {console.error(error)});
 

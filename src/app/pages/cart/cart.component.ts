@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CartService} from "../../common/services/cart.service";
 import {Cart} from "../../common/models/Cart";
 import {ProductService} from "../../common/services/product.service";
-import {Product} from "../../common/models/Product";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {Subscription} from "rxjs";
 
@@ -19,7 +18,7 @@ export class CartComponent implements OnInit, OnDestroy {
   storage?: AngularFireStorage
   loading: boolean = false;
 
-  constructor(private cartService: CartService, private productService: ProductService) { }
+  constructor(private cartService: CartService) { }
 
   ngOnInit() {
     this.loading = true;
@@ -32,24 +31,12 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   initProductsFromCart(userId: string | undefined) {
-    if (userId !== undefined)
-      this.cartService.getCartByUserId(userId).then(cart => {
-        if (cart !== undefined) {
-          let productMap: Map<Product, number> = this.convertToMap(cart[0].product_list);
-          this.cart = new Cart(cart[0].id, cart[0].user_id, productMap);
-        }
-      }).catch(error => {console.error(error)});
-  }
+    if (userId === undefined) return;
 
-  convertToMap(productList: Array<any>): Map<Product, number> {
-    let productMap: Map<Product, number> = new Map<Product, number>();
-    for (const item of productList) {
-      this.productService.getProductById(item.product_id).then(product => {
-        productMap.set(product[0], item.amount);
-        this.loading = false;
-      }).catch(error => {console.error(error)});
-    }
-    return productMap;
+    this.cartService.getCartByUserId(userId).then(cart => {
+      this.cart = cart;
+      this.loading = false;
+    }).catch(error => {console.error(error)});
   }
 
   removeItem(productId: string) {
