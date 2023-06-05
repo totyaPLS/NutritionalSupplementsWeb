@@ -6,6 +6,7 @@ import {ErrorMessages} from "../../common/enums/ErrorMessages";
 import {AuthService} from "../../common/services/auth.service";
 import {UserService} from "../../common/services/user.service";
 import {Router} from "@angular/router";
+import {CartService} from "../../common/services/cart.service";
 
 @Component({
   selector: 'app-registration',
@@ -33,7 +34,13 @@ export class RegistrationComponent implements OnInit {
   rePassword = new FormControl('');
   loading: boolean = false;
 
-  constructor(private location: Location, private router: Router, private authService: AuthService, private userService: UserService) {
+  constructor(
+    private location: Location,
+    private router: Router,
+    private authService: AuthService,
+    private userService: UserService,
+    private cartService: CartService
+  ) {
     this.rePassword.addValidators([Validators.required]);
   }
 
@@ -115,7 +122,13 @@ export class RegistrationComponent implements OnInit {
         }
       };
       this.userService.create(user).then(_ => {
-        // TODO: create empty Cart for the user
+        this.cartService.create(
+          {
+            id: '',
+            product_list: [],
+            user_id: JSON.parse(localStorage.getItem('user') as string).uid
+          }
+        );
         this.router.navigateByUrl('/main');
       }).catch(error => {
         console.error(error);
