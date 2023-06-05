@@ -38,17 +38,15 @@ export class MainComponent implements OnInit {
       if (cart === undefined) return;
 
       if (this.cartContainsProduct(cart, productId)) {
-        this.cartService.increaseProductAmount(cart, productId);
+        this.cartService.increaseProductAmount(cart, productId).then(firebaseCart => {
+          this.cartService.update(firebaseCart);
+        });
       } else {
-        this.cartService.addNewProductToCart(cart, productId);
+        this.cartService.addNewProductToCart(cart, productId).then(firebaseCart => {
+          this.cartService.update(firebaseCart);
+        });
       }
     }).catch(error => {console.error(error)});
-
-    // if cart's list doesn't contain this product id
-      // then add a new item
-      // else increase the amount
-
-    // this.cartService.addToCart(productId);
   }
 
   cartContainsProduct(cart: Cart, productId: string): boolean {

@@ -53,10 +53,34 @@ export class CartService {
   }
 
   increaseProductAmount(cart: Cart, productId: string) {
-    return this.db.collection<any>(this.collectionName).doc(cart.id).set(cart);
+    return new Promise<Cart>(resolve => {
+      this.db.collection<any>(this.collectionName).doc(cart.id).valueChanges().subscribe(firebaseCart => {
+        for (const product of firebaseCart.product_list) {
+          if (product.product_id === productId) {
+            product.amount++;
+            break;
+          }
+        }
+        resolve(firebaseCart);
+      });
+    });
   }
 
-  addNewProductToCart(cart: Cart, productId: string): void {
+  addNewProductToCart(cart: Cart, productId: string) {
+    return new Promise<Cart>(resolve => {
+      this.db.collection<any>(this.collectionName).doc(cart.id).valueChanges().subscribe(firebaseCart => {
+        /*for (const product of firebaseCart.product_list) {
+          if (product.product_id === productId) {
+            product.amount++;
+            break;
+          }
+        }*/
+        firebaseCart.product_list.push(
+          {amount: 1, product_id: productId}
+        );
 
+        resolve(firebaseCart);
+      });
+    });
   }
 }
