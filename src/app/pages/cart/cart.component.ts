@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CartService} from "../../common/services/cart.service";
 import {Cart} from "../../common/models/Cart";
-import {ProductService} from "../../common/services/product.service";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {Subscription} from "rxjs";
 
@@ -40,6 +39,12 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   removeItem(productId: string) {
-    this.cartService.delete(productId);
+    if (this.currentUserId === undefined) return;
+
+    this.cartService.getCartByUserId(this.currentUserId).then(cart => {
+      this.cartService.deleteProductFromCart(cart, productId).then(firebaseCart => {
+        this.cartService.update(firebaseCart);
+      });
+    }).catch(error => {console.error(error)});
   }
 }

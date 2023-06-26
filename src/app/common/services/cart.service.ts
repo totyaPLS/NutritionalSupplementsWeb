@@ -79,4 +79,21 @@ export class CartService {
       });
     });
   }
+
+  deleteProductFromCart(cart: Cart, productIdToDelete: string) {
+    return new Promise<Cart>(resolve => {
+      let sub = this.db.collection<any>(this.collectionName).doc(cart.id).valueChanges().subscribe(firebaseCart => {
+        const indexToDelete = firebaseCart.product_list.findIndex(
+          (product: any) => product.product_id === productIdToDelete
+        );
+
+        if (indexToDelete !== -1) {
+          firebaseCart.product_list.splice(indexToDelete, 1);
+        }
+
+        resolve(firebaseCart);
+        sub.unsubscribe();
+      });
+    });
+  }
 }
