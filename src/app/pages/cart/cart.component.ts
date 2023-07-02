@@ -38,13 +38,19 @@ export class CartComponent implements OnInit, OnDestroy {
     }).catch(error => {console.error(error)});
   }
 
-  removeItem(productId: string) {
+  async removeItem(productId: string) {
     if (this.currentUserId === undefined) return;
+    this.loading = true;
 
-    this.cartService.getCartByUserId(this.currentUserId).then(cart => {
-      this.cartService.deleteProductFromCart(cart, productId).then(firebaseCart => {
-        this.cartService.update(firebaseCart);
+    const sub = await this.cartService.getCartWithObservable(this.currentUserId).subscribe(async cartList => {
+      await this.cartService.convertFirebaseCartToCartObject(cartList).then(async cart => {
+        await this.cartService.deleteProductFromCart(cart, productId).then(async firebaseCart => {
+          await this.cartService.update(firebaseCart);
+        });
+        this.cart = cart;
       });
-    }).catch(error => {console.error(error)});
+      await sub.unsubscribe();
+      this.loading = false;
+    });
   }
 }

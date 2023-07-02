@@ -33,6 +33,7 @@ export class MainComponent implements OnInit {
 
   addToCart(productId: string) {
     if (this.currentUserId === undefined) return;
+    this.loading = true;
 
     this.cartService.getCartByUserId(this.currentUserId).then(cart => {
       if (cart === undefined) return;
@@ -46,6 +47,8 @@ export class MainComponent implements OnInit {
           this.cartService.update(firebaseCart);
         });
       }
+
+      this.loading = false;
     }).catch(error => {console.error(error)});
   }
 

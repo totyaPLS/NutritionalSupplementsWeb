@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Cart} from "../models/Cart";
 import {ProductService} from "./product.service";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,12 @@ export class CartService {
         resolve(this.convertFirebaseCartToCartObject(cartList));
       });
     });
+  }
+
+  getCartWithObservable(userId: string): Observable<any> {
+    return this.db.collection<any>(
+      this.collectionName, ref => ref.where('user_id', '==', userId)
+    ).valueChanges();
   }
 
   async convertFirebaseCartToCartObject(firebaseCartList: any[]): Promise<Cart> {
